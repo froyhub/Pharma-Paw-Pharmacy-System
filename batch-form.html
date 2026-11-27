@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Receive / Update Medicine Batch | Pharma Paw</title>
+        <link rel="stylesheet" href="assets/style.css">
+        <script src="assets/app.js" defer></script>
+    </head>
+    <body>
+        <header>
+            <div class="brand">🐾 Pharma Paw Pharmacy</div>
+            <div class="muted">Signed in: Storekeeper · <a href="login.html">Logout</a></div>
+        </header>
+        <div class="layout">
+            <aside>
+                <a class="" href="dashboard.html">Dashboard</a>
+                <a class="" href="medicines.html">Medicine Catalogue</a>
+                <a class="active" href="batches.html">Batch & Expiry</a>
+                <a class="" href="stock.html">Stock Transactions</a>
+                <a class="" href="suppliers.html">Suppliers</a>
+                <a class="" href="logs.html">Activity Logs</a>
+                <a class="" href="reports.html">Reports</a>
+                <a class="" href="staff.html">Staff Accounts</a>
+                <a class="" href="login.html">Login</a>
+            </aside>
+            <main>
+                <h1>Receive / Update Medicine Batch</h1>
+                <p class="muted">Storyboard prototype · Storekeeper view</p>
+                <div class="panel form">
+                    <form>
+                        <label>Medicine</label>
+                        <select>
+                            <option>Select medicine</option>
+                            <option>Pet Vitamin Drops</option>
+                        </select>
+                        <label>Supplier</label>
+                        <select>
+                            <option>Select supplier</option>
+                            <option>PawCare Veterinary Supplies</option>
+                        </select>
+                        <label>Batch Number</label>
+                        <input placeholder="Manufacturer batch number">
+                        <label>Quantity Received</label>
+                        <input type="number" min="1">
+                        <label>Received Date</label>
+                        <input type="date">
+                        <label>Expiry Date</label>
+                        <input type="date">
+                        <button type="button" data-demo="Demo: create the batch, increase the available stock and write a STOCK_IN transaction and inventory log.">Save Batch / Receive Stock</button>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </body>
+</html>

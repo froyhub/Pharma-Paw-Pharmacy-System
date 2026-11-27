@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Batch & Expiry Tracking | Pharma Paw</title>
+        <link rel="stylesheet" href="assets/style.css">
+        <script src="assets/app.js" defer></script>
+    </head>
+    <body>
+        <header>
+            <div class="brand">🐾 Pharma Paw Pharmacy</div>
+            <div class="muted">Signed in: Storekeeper · <a href="login.html">Logout</a></div>
+        </header>
+        <div class="layout">
+            <aside>
+                <a class="" href="dashboard.html">Dashboard</a>
+                <a class="" href="medicines.html">Medicine Catalogue</a>
+                <a class="active" href="batches.html">Batch & Expiry</a>
+                <a class="" href="stock.html">Stock Transactions</a>
+                <a class="" href="suppliers.html">Suppliers</a>
+                <a class="" href="logs.html">Activity Logs</a>
+                <a class="" href="reports.html">Reports</a>
+                <a class="" href="staff.html">Staff Accounts</a>
+                <a class="" href="login.html">Login</a>
+            </aside>
+            <main>
+                <h1>Batch & Expiry Tracking</h1>
+                <p class="muted">Storyboard prototype · Storekeeper view</p>
+                <div class="panel">
+                    <div class="actions">
+                        <a class="btn" href="batch-form.html">+ Receive New Batch</a>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>Medicine</th>
+                            <th>Batch No.</th>
+                            <th>Supplier</th>
+                            <th>Qty on Hand</th>
+                            <th>Received</th>
+                            <th>Expiry</th>
+                            <th>Status</th>
+                        </tr>
+                        <tr>
+                            <td>Pet Vitamin Drops</td>
+                            <td>PV-2608-A</td>
+                            <td>PawCare</td>
+                            <td>30</td>
+                            <td>2026-11-01</td>
+                            <td>2027-08-15</td>
+                            <td><span class="pill green">Active</span></td>
+                        </tr>
+                        <tr>
+                            <td>Canine Dewormer</td>
+                            <td>CD-2602-B</td>
+                            <td>VetMed</td>
+                            <td>8</td>
+                            <td>2026-10-12</td>
+                            <td>2026-12-10</td>
+                            <td><span class="pill">Expiring soon</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Add / Edit Medicine | Pharma Paw</title>
+        <link rel="stylesheet" href="assets/style.css">
+        <script src="assets/app.js" defer></script>
+    </head>
+    <body>
+        <header>
+            <div class="brand">🐾 Pharma Paw Pharmacy</div>
+            <div class="muted">Signed in: Admin / Storekeeper · <a href="login.html">Logout</a></div>
+        </header>
+        <div class="layout">
+            <aside>
+                <a class="" href="dashboard.html">Dashboard</a>
+                <a class="active" href="medicines.html">Medicine Catalogue</a>
+                <a class="" href="batches.html">Batch & Expiry</a>
+                <a class="" href="stock.html">Stock Transactions</a>
+                <a class="" href="suppliers.html">Suppliers</a>
+                <a class="" href="logs.html">Activity Logs</a>
+                <a class="" href="reports.html">Reports</a>
+                <a class="" href="staff.html">Staff Accounts</a>
+                <a class="" href="login.html">Login</a>
+            </aside>
+            <main>
+                <h1>Add / Edit Medicine</h1>
+                <p class="muted">Storyboard prototype · Admin / Storekeeper view</p>
+                <div class="panel form">
+                    <form>
+                        <label>Medicine Name</label>
+                        <input placeholder="e.g. Pet Vitamin Drops">
+                        <label>Category</label>
+                        <select>
+                            <option>Choose category</option>
+                            <option>Antibiotics</option>
+                            <option>Vitamins & Supplements</option>
+                            <option>Dewormers</option>
+                            <option>Skin & Wound Care</option>
+                        </select>
+                        <label>Suitable Animal Type</label>
+                        <input placeholder="Dog, Cat, Rabbit...">
+                        <label>Dosage / Strength</label>
+                        <input placeholder="e.g. 5 ml">
+                        <label>Unit Price (RM)</label>
+                        <input type="number" step=".01">
+                        <label>Description</label>
+                        <textarea></textarea>
+                        <div class="actions">
+                            <button type="button" data-demo="Demo: validate required fields and save the medicine record.">Save Medicine</button>
+                            <a class="btn secondary" href="medicines.html">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="notice">
+                    New medicine records are created here. Batch number, supplier, received quantity and expiry date are recorded separately in Batch & Expiry.
+                </div>
+            </main>
+        </div>
+    </body>
+</html>

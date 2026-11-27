@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Activate Staff Account | Pharma Paw</title>
+        <link rel="stylesheet" href="assets/style.css">
+        <script src="assets/app.js" defer></script>
+    </head>
+    <body>
+        <header>
+            <div class="brand">🐾 Pharma Paw Pharmacy</div>
+            <div class="muted">Signed in: Storekeeper · <a href="login.html">Logout</a></div>
+        </header>
+        <div class="layout">
+            <aside>
+                <a class="" href="dashboard.html">Dashboard</a>
+                <a class="" href="medicines.html">Medicine Catalogue</a>
+                <a class="" href="batches.html">Batch & Expiry</a>
+                <a class="" href="stock.html">Stock Transactions</a>
+                <a class="" href="suppliers.html">Suppliers</a>
+                <a class="" href="logs.html">Activity Logs</a>
+                <a class="" href="reports.html">Reports</a>
+                <a class="" href="staff.html">Staff Accounts</a>
+                <a class="" href="login.html">Login</a>
+            </aside>
+            <main>
+                <h1>Activate Staff Account</h1>
+                <p class="muted">Storyboard prototype · Storekeeper view</p>
+                <div class="panel form">
+                    <p class="notice">Only staff records created by an Admin can be activated. Users cannot choose their own role.</p>
+                    <form>
+                        <label>Staff ID</label>
+                        <input placeholder="Staff ID issued by Admin">
+                        <label>One-time Activation Code</label>
+                        <input placeholder="Activation code">
+                        <label>Create Password</label>
+                        <input type="password">
+                        <label>Confirm Password</label>
+                        <input type="password">
+                        <button type="button" data-demo="Demo: verify the Staff ID and one-time activation code, hash the password, activate the account and invalidate the code.">Activate Account</button>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </body>
+</html>
