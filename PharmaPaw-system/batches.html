@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Batches | Pharma Paw</title>
+    <link rel="stylesheet" href="css/theme.css">
+    
+    <script>
+        if (!sessionStorage.getItem('userRole')) window.location.href = 'login.html';
+        document.addEventListener("DOMContentLoaded", () => {
+            const role = sessionStorage.getItem('userRole');
+            document.getElementById('nav-role').innerText = role;
+            if (role !== 'Admin') {
+                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+            }
+        });
+        function logout() { sessionStorage.clear(); window.location.href = 'login.html'; }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="brand">🐾 Pharma Paw</div>
+        <div class="muted">Signed in: <span id="nav-role">...</span> · <a href="#" onclick="logout()">Logout</a></div>
+    </header>
+    <div class="layout">
+        <aside>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="medicines.html">Medicine Catalogue</a>
+            <a href="batches.html" class="active">Batch & Expiry</a>
+            <a href="stock.html">Stock Transactions</a>
+            <a href="suppliers.html">Suppliers</a>
+            <a href="logs.html" class="admin-only">Activity Logs</a>
+            <a href="reports.html" class="admin-only">Reports</a>
+            <a href="staff.html" class="admin-only">Staff Accounts</a>
+        </aside>
+        <main>
+            <h1>Batch & Expiry Tracking</h1>
+            <p class="muted">Manage received batches.</p>
+            
+            <div class="panel form">
+                <h3>Receive New Batch</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <label>Batch ID</label><input type="text" id="bat-id">
+                        <label>Medicine ID</label><input type="text" id="bat-med-id">
+                        <label>Supplier ID</label><input type="text" id="bat-supp-id">
+                        <label>Batch Number</label><input type="text" id="bat-num">
+                    </div>
+                    <div>
+                        <label>Status</label>
+                        <select id="bat-status">
+                            <option>Active</option><option>Expired</option><option>Quarantined</option>
+                        </select>
+                        <label>Receive Date</label><input type="date" id="bat-rec-date">
+                        <label>Expiry Date</label><input type="date" id="bat-exp-date">
+                    </div>
+                    <div>
+                        <label>Quantity</label><input type="number" id="bat-qty">
+                        <button onclick="addBatch()" style="width: 100%; margin-top: 1.5rem;">Save Batch</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <table id="bat-table">
+                    <thead>
+                        <tr>
+                            <th>BATCH_ID</th><th>MED_ID</th><th>SUPP_ID</th><th>BATCH_NUM</th>
+                            <th>Status</th><th>Receive Date</th><th>Expiry Date</th><th>Qty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>BAT001</td><td>MED001</td><td>SUPP01</td><td>PV-2608-A</td>
+                            <td><span class="pill green">Active</span></td><td>2026-11-01</td><td>2027-08-15</td><td>30</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function addBatch() {
+            const id = document.getElementById('bat-id').value;
+            const medId = document.getElementById('bat-med-id').value;
+            const suppId = document.getElementById('bat-supp-id').value;
+            const num = document.getElementById('bat-num').value;
+            const status = document.getElementById('bat-status').value;
+            const recDate = document.getElementById('bat-rec-date').value;
+            const expDate = document.getElementById('bat-exp-date').value;
+            const qty = document.getElementById('bat-qty').value;
+
+            const tbody = document.querySelector('#bat-table tbody');
+            tbody.innerHTML += `
+                <tr>
+                    <td>${id}</td><td>${medId}</td><td>${suppId}</td><td>${num}</td>
+                    <td><span class="pill ${status === 'Active' ? 'green' : 'warning'}">${status}</span></td>
+                    <td>${recDate}</td><td>${expDate}</td><td>${qty}</td>
+                </tr>
+            `;
+            // Clear inputs
+            document.querySelectorAll('.form input').forEach(i => i.value = '');
+        }
+    </script>
+</body>
+</html>

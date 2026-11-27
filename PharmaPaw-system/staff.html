@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Staff Accounts | Pharma Paw</title>
+    <link rel="stylesheet" href="css/theme.css">
+    
+    <script>
+        if (!sessionStorage.getItem('userRole')) window.location.href = 'login.html';
+        if (sessionStorage.getItem('userRole') !== 'Admin') {
+            alert("Access Denied. Admin only.");
+            window.location.href = 'dashboard.html';
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById('nav-role').innerText = sessionStorage.getItem('userRole');
+        });
+        function logout() { sessionStorage.clear(); window.location.href = 'login.html'; }
+    </script>
+    
+    <style>
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--bg-surface);
+        }
+        table {
+            min-width: 1000px; 
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--bg-surface);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            width: 100%;
+            max-width: 600px;
+            box-shadow: var(--shadow-md);
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .modal-header h3 { margin: 0; }
+        .close-btn {
+            background: transparent;
+            color: var(--text-muted);
+            box-shadow: none;
+            font-size: 1.5rem;
+            padding: 0;
+            cursor: pointer;
+        }
+        .close-btn:hover { color: var(--danger); box-shadow: none; transform: none; }
+        
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+        }
+        .btn-edit {
+            background: var(--primary-light);
+            color: var(--primary);
+            box-shadow: none;
+        }
+        .btn-edit:hover {
+            background: var(--primary);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">🐾 Pharma Paw</div>
+        <div class="muted">Signed in: <span id="nav-role">...</span> · <a href="#" onclick="logout()">Logout</a></div>
+    </header>
+    <div class="layout">
+        <aside>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="medicines.html">Medicine Catalogue</a>
+            <a href="batches.html">Batch & Expiry</a>
+            <a href="stock.html">Stock Transactions</a>
+            <a href="suppliers.html">Suppliers</a>
+            <a href="logs.html">Activity Logs</a>
+            <a href="reports.html">Reports</a>
+            <a href="staff.html" class="active">Staff Accounts</a>
+        </aside>
+        <main>
+            <h1>Staff Accounts</h1>
+            <p class="muted">View and manage all system accounts.</p>
+            
+            <div class="panel form">
+                <h3>Create New Account</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <label>User ID</label><input type="text" id="usr-id" placeholder="e.g. SK002">
+                        <label>Full Name</label><input type="text" id="usr-name" placeholder="e.g. John Doe">
+                        <label>Username</label><input type="text" id="usr-uname">
+                        <label>Password</label><input type="password" id="usr-pass">
+                    </div>
+                    <div>
+                        <label>Phone</label><input type="text" id="usr-phone">
+                        <label>Email</label><input type="email" id="usr-email">
+                        <label>Role</label>
+                        <select id="usr-role">
+                            <option value="Staff">Staff</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Hire Date</label><input type="date" id="usr-hire">
+                        <label>Shift</label>
+                        <select id="usr-shift"><option>Morning</option><option>Night</option></select>
+                        <label>Position</label>
+                        <select id="usr-pos"><option>Storekeeper</option><option>Assistant</option><option>Manager</option></select>
+                        <button onclick="addStaff()" style="width: 100%; margin-top: 1rem;">Create Account</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>All User Details</h3>
+                <div class="table-container">
+                    <table id="staff-table">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Full Name</th>
+                                <th>Username</th>
+                                <th>Password</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Shift</th>
+                                <th>Position</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ADMIN001</td>
+                                <td>Super Admin</td>
+                                <td>admin</td>
+                                <td>admin123</td>
+                                <td>012-3456789</td>
+                                <td>admin@pawcare.com</td>
+                                <td><span class="pill warning">Admin</span></td>
+                                <td>Morning</td>
+                                <td>Manager</td>
+                                <td><button class="btn-sm btn-edit" onclick="openEditModal(this)">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td>SK001</td>
+                                <td>Amir</td>
+                                <td>amir_sk</td>
+                                <td>staff123</td>
+                                <td>019-8765432</td>
+                                <td>amir@pawcare.com</td>
+                                <td><span class="pill green">Staff</span></td>
+                                <td>Night</td>
+                                <td>Storekeeper</td>
+                                <td><button class="btn-sm btn-edit" onclick="openEditModal(this)">Edit</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit User Details</h3>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+            
+            <div class="form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <label>User ID</label>
+                    <input type="text" id="edit-id" readonly style="background: var(--bg-body); cursor: not-allowed;">
+                    <label>Full Name</label>
+                    <input type="text" id="edit-name">
+                    <label>Username</label>
+                    <input type="text" id="edit-uname">
+                    <label>Password</label>
+                    <input type="text" id="edit-pass">
+                </div>
+                <div>
+                    <label>Phone</label>
+                    <input type="text" id="edit-phone">
+                    <label>Email</label>
+                    <input type="email" id="edit-email">
+                    <label>Role</label>
+                    <select id="edit-role">
+                        <option value="Staff">Staff</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                    <label>Shift</label>
+                    <select id="edit-shift"><option>Morning</option><option>Night</option></select>
+                    <label>Position</label>
+                    <input type="text" id="edit-pos">
+                </div>
+            </div>
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button onclick="saveEdit()" style="flex: 1;">Save Changes</button>
+                <button class="btn secondary" onclick="closeModal()" style="flex: 1;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addStaff() {
+            const id = document.getElementById('usr-id').value;
+            const name = document.getElementById('usr-name').value;
+            const uname = document.getElementById('usr-uname').value;
+            const pass = document.getElementById('usr-pass').value;
+            const phone = document.getElementById('usr-phone').value;
+            const email = document.getElementById('usr-email').value;
+            const role = document.getElementById('usr-role').value;
+            const shift = document.getElementById('usr-shift').value;
+            const pos = document.getElementById('usr-pos').value;
+
+            const tbody = document.querySelector('#staff-table tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${id}</td>
+                <td>${name}</td>
+                <td>${uname}</td>
+                <td>${pass}</td>
+                <td>${phone}</td>
+                <td>${email}</td>
+                <td><span class="pill ${role === 'Admin' ? 'warning' : 'green'}">${role}</span></td>
+                <td>${shift}</td>
+                <td>${pos}</td>
+                <td><button class="btn-sm btn-edit" onclick="openEditModal(this)">Edit</button></td>
+            `;
+            tbody.appendChild(row);
+            
+            document.querySelectorAll('.form input').forEach(input => input.value = '');
+        }
+
+        function openEditModal(button) {
+            const row = button.closest('tr');
+            const cells = row.querySelectorAll('td');
+            
+            document.getElementById('edit-id').value = cells[0].innerText;
+            document.getElementById('edit-name').value = cells[1].innerText;
+            document.getElementById('edit-uname').value = cells[2].innerText;
+            document.getElementById('edit-pass').value = cells[3].innerText;
+            document.getElementById('edit-phone').value = cells[4].innerText;
+            document.getElementById('edit-email').value = cells[5].innerText;
+            document.getElementById('edit-role').value = cells[6].innerText.trim();
+            document.getElementById('edit-shift').value = cells[7].innerText;
+            document.getElementById('edit-pos').value = cells[8].innerText;
+            
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function saveEdit() {
+            const editId = document.getElementById('edit-id').value;
+            const rows = document.querySelectorAll('#staff-table tbody tr');
+            
+            rows.forEach(row => {
+                if (row.cells[0].innerText === editId) {
+                    row.cells[1].innerText = document.getElementById('edit-name').value;
+                    row.cells[2].innerText = document.getElementById('edit-uname').value;
+                    row.cells[3].innerText = document.getElementById('edit-pass').value;
+                    row.cells[4].innerText = document.getElementById('edit-phone').value;
+                    row.cells[5].innerText = document.getElementById('edit-email').value;
+                    
+                    const newRole = document.getElementById('edit-role').value;
+                    row.cells[6].innerHTML = `<span class="pill ${newRole === 'Admin' ? 'warning' : 'green'}">${newRole}</span>`;
+                    
+                    row.cells[7].innerText = document.getElementById('edit-shift').value;
+                    row.cells[8].innerText = document.getElementById('edit-pos').value;
+                }
+            });
+
+            closeModal();
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

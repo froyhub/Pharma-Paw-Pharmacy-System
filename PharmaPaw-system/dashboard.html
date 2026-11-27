@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard | Pharma Paw</title>
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        if (!sessionStorage.getItem('userRole')) window.location.href = 'login.html';
+        document.addEventListener("DOMContentLoaded", () => {
+            const role = sessionStorage.getItem('userRole');
+            document.getElementById('nav-role').innerText = role;
+            
+            if (role !== 'Admin') {
+                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+            }
+        });
+        function logout() { sessionStorage.clear(); window.location.href = 'login.html'; }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="brand">🐾 Pharma Paw</div>
+        <div class="muted">Signed in: <span id="nav-role">...</span> · <a href="#" onclick="logout()">Logout</a></div>
+    </header>
+    <div class="layout">
+        <aside>
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="medicines.html">Medicine Catalogue</a>
+            <a href="batches.html">Batch & Expiry</a>
+            <a href="stock.html">Stock Transactions</a>
+            <a href="suppliers.html">Suppliers</a>
+            <a href="logs.html" class="admin-only">Activity Logs</a>
+            <a href="reports.html" class="admin-only">Reports</a>
+            <a href="staff.html" class="admin-only">Staff Accounts</a>
+        </aside>
+        <main>
+            <h1>Dashboard</h1>
+            <p class="muted">Overview of your pharmacy inventory.</p>
+            
+            <div class="metrics-grid">
+                <div class="metric-card" style="border-left: 4px solid var(--primary);">
+                    <span>Active Medicines</span>
+                    <strong>128</strong>
+                </div>
+                <div class="metric-card" style="border-left: 4px solid var(--success);">
+                    <span>Units in Stock</span>
+                    <strong>2,450</strong>
+                </div>
+                <div class="metric-card" style="border-left: 4px solid var(--warning);">
+                    <span>Low Stock Batches</span>
+                    <strong>08</strong>
+                </div>
+                <div class="metric-card" style="border-left: 4px solid var(--danger);">
+                    <span>Expiring in 30 Days</span>
+                    <strong>05</strong>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                
+                <div class="panel chart-panel">
+                    <h3>Inventory by Category</h3>
+                    <div class="chart-container">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="panel chart-panel">
+                    <h3>Low Stock Alert (Top 5)</h3>
+                    <div class="progress-list">
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>Canine Dewormer</span>
+                                <span>8 / 50</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill danger" style="width: 16%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>Feline Antibiotic</span>
+                                <span>12 / 50</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill warning" style="width: 24%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>Pet Vitamin Drops</span>
+                                <span>20 / 100</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill warning" style="width: 20%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>Flea Treatment Spray</span>
+                                <span>35 / 200</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" style="width: 17.5%; background: var(--primary);"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>Joint Supplement</span>
+                                <span>45 / 150</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" style="width: 30%; background: var(--primary);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const ctx = document.getElementById('categoryChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Vitamins', 'Antibiotics', 'Dewormers', 'Skin Care', 'Other'],
+                    datasets: [{
+                        data: [45, 25, 15, 10, 5],
+                        backgroundColor: [
+                            '#0ea5e9', 
+                            '#10b981', 
+                            '#f59e0b', 
+                            '#ef4444', 
+                            '#8b5cf6'  
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: { family: "'Plus Jakarta Sans', sans-serif", size: 12 }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

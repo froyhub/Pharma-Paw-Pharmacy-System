@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Logs & Reports | Pharma Paw</title>
+    <link rel="stylesheet" href="css/theme.css">
+    
+    <script>
+        if (!sessionStorage.getItem('userRole')) window.location.href = 'login.html';
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById('nav-role').innerText = sessionStorage.getItem('userRole');
+            if (sessionStorage.getItem('userRole') !== 'Admin') {
+                const staffLink = document.querySelector('aside a[href="staff.html"]');
+                if (staffLink) staffLink.style.display = 'none';
+            }
+        });
+        function logout() { sessionStorage.clear(); window.location.href = 'login.html'; }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="brand">🐾 Pharma Paw</div>
+        <div class="muted">Signed in: <span id="nav-role">...</span> · <a href="#" onclick="logout()">Logout</a></div>
+    </header>
+    <div class="layout">
+        <aside>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="medicines.html">Medicine Catalogue</a>
+            <a href="batches.html">Batch & Expiry</a>
+            <a href="stock.html">Stock Transactions</a>
+            <a href="suppliers.html">Suppliers</a>
+            <a href="logs.html" class="active">Activity Logs</a>
+            <a href="reports.html">Reports</a>
+            <a href="staff.html">Staff Accounts</a>
+        </aside>
+        <main>
+            <h1>Logs & Reports</h1>
+            
+            <div class="panel form">
+                <h3>Generate Report</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <label>Report ID</label><input type="text" id="rep-id">
+                        <label>Report Title</label><input type="text" id="rep-title">
+                    </div>
+                    <div>
+                        <label>Report Type</label>
+                        <select id="rep-type"><option>Stock Summary</option><option>Expiry</option><option>Compliance</option></select>
+                        <label>Date Generated</label><input type="date" id="rep-date">
+                    </div>
+                    <div>
+                        <label>Start Date</label><input type="date" id="rep-start">
+                        <label>End Date</label><input type="date" id="rep-end">
+                        <button onclick="generateReport()" style="width: 100%; margin-top: 1rem;">Generate</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>Activity Log</h3>
+                <table id="log-table">
+                    <thead>
+                        <tr><th>LOG_ID</th><th>MED_ID</th><th>USER_ID</th><th>ACTION</th><th>INV_DESCRIPTION</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>LOG01</td><td>MED001</td><td>SK001</td><td>STOCK_IN</td><td>Received 30 units of PV-2608-A</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function generateReport() {
+            const tbody = document.querySelector('#log-table tbody');
+            tbody.innerHTML += `
+                <tr>
+                    <td>LOG-NEW</td><td>SYSTEM</td><td>${sessionStorage.getItem('userId')}</td>
+                    <td>REPORT_GEN</td>
+                    <td>Generated ${document.getElementById('rep-title').value} (${document.getElementById('rep-type').value})</td>
+                </tr>
+            `;
+            alert("Report Generated successfully! Check the log below.");
+        }
+    </script>
+</body>
+</html>
